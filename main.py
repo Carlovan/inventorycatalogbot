@@ -1,20 +1,19 @@
 from telegram.ext import CommandHandler, Updater
 import logging
 
+import commands as cmds
 import settings
 
 # Setting up the logger
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-def echo(bot, update, args):
-	update.message.reply_text(' '.join(args))
-
 def main():
 	updater = Updater(settings.token)
 	dp = updater.dispatcher
 
-	dp.add_handler(CommandHandler('echo', echo, pass_args=True))
+	for handler in cmds.handlers:
+		dp.add_handler(handler)
 
 	updater.start_polling()
 	updater.idle()
