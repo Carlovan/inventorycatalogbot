@@ -2,4 +2,5 @@
 
 import os
 
-token = os.getenv('TOKEN', '')
+token = os.getenv('TOKEN')
+database_url = os.getenv('DATABASE_URL')

@@ -1,7 +1,7 @@
 import importlib
 from telegram.ext import CommandHandler
 
-cmd_list = ['echo']
+cmd_list = ['echo', 'conta']
 
 handlers = []
 for c in cmd_list:
