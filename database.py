@@ -43,3 +43,10 @@ def count_items(filt):
 	assert(type(filt) is utils.filters.ItemFilter)
 	sql = 'SELECT COUNT(*) AS total FROM items WHERE {}'.format(filt.get_sql())
 	return _read(sql, filt.get_args())[0]['total']
+
+def get_items(filt):
+	assert(type(filt) is utils.filters.ItemFilter)
+	sql = 'SELECT * FROM items WHERE {}'.format(filt.get_sql())
+	items = _read(sql, filt.get_args())
+	items = map(lambda item: utils.item.Item(item['name'], item['rarity'], item['usable']), items)
+	return list(items)
