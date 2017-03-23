@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 # Filter classes
 
+from .item import is_rarity
+
 class ItemFilter:
 	def __init__(self, rarity=[], name=[]):
 		assert(isinstance(rarity, (tuple, list)))
@@ -23,3 +25,13 @@ class ItemFilter:
 	def get_args(self):
 		return tuple(list(map(lambda x: f'%{x}%', self.name)) + self.rarity)
 
+	@staticmethod
+	def from_list(args):
+		# Separates the rarity from the name filters in the given list and builds a new filter
+		args = map(str.strip, args)
+		args = list(filter(lambda x: x != '', args))
+		tmp = list(map(is_rarity, map(str.upper, args)))
+		name_ind = tmp.index(False) if False in tmp else len(tmp)
+		rarity = list(map(str.upper, args[:name_ind]))
+		name = args[name_ind:]
+		return ItemFilter(rarity=rarity, name=name)
