@@ -1,11 +1,11 @@
 import database
-import utils
+from utils.filters import ItemFilter
+from utils.item import get_messages
 
 def run(bot, update, args):
-	filters = utils.gen_filters(args)
+	filters = ItemFilter.from_list(args)
 	items = database.get_items(filters)
-	items = utils.sort_items(items)
-	items = map(str, items)
-	outputs = utils.split_list(head='Ci sono {} oggetti che corrispondono alla tua ricerca'.format(len(items)))
-	for out in outputs:
-		update.message.reply_text(out)
+	items.sort()
+	messages = get_messages(items, head='Ci sono {} oggetti che corrispondono alla tua ricerca:'.format(len(items)))
+	for msg in messages:
+		update.message.reply_text(msg)
