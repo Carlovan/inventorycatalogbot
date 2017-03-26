@@ -4,7 +4,7 @@
 import importlib
 from telegram.ext import RegexHandler
 
-msg_list = [('inventario','@.*, possiedi:\n.*')]
+msg_list = [('inventario','@.*, possiedi( \(pg \d+/\d+\))?:\n.*')]
 
 handlers = []
 for c in msg_list:
