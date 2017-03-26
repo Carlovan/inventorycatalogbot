@@ -1,6 +1,6 @@
 import database
 from utils.filters import ItemFilter
-from utils.item import get_messages
+from utils.inventory import get_messages
 
 def run(bot, update, args):
 	filters = ItemFilter.from_list(args)

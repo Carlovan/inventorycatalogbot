@@ -41,9 +41,10 @@ class Item:
 	@staticmethod
 	def from_string(text):
 		match = _item_regex.fullmatch(text)
-		self.name = match.group('name')
-		self.rarity = match.group('rarity')
-		self.usable = match.group('usable') is not None
+		name = match.group('name')
+		rarity = match.group('rarity')
+		usable = match.group('usable') is not None
+		return Item(name, rarity, usable)
 
 def is_rarity(text):
 	# Checks if the given string is a valid rarity
@@ -52,14 +53,3 @@ def is_rarity(text):
 def is_item(text):
 	# Checks if the given string is a valid item
 	return _item_regex.fullmatch(text) is not None
-
-def get_messages(items, head=''):
-	# Creates the list of items and splits it in string max 4096 char long
-	items = map(str, items)
-	res = [head+'\n']
-	for item in items:
-		item = f'- {item}\n'
-		if len(res[-1]) + len(item) > 4096:
-			res.append('')
-		res[-1] += item
-	return res

@@ -1,3 +1,6 @@
+# -*- coding: utf-8 -*-
+# This package contains handlers for commands
+
 import importlib
 from telegram.ext import CommandHandler
 
