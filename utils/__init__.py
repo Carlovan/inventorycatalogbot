@@ -1,7 +1,7 @@
 # -*- coding: utf-8  -*-
 # A bunch of useful functions
 
-import database
+import database.users
 from .filters import UserFilter
 
 def is_fromIB(update):
@@ -16,5 +16,5 @@ def is_fromIB(update):
 def is_from_admin(update):
 	# Gets a bot update and checks if it's from an admin
 	filt = UserFilter(userid=update.message.from_user.id)
-	user = database.get_user(filt)
+	user = database.user.get_multiple(filt)
 	return user.admin
