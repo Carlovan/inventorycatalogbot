@@ -2,6 +2,7 @@
 # This file contains useful function to work with inventories
 
 from .item import Item, is_item
+import database.items
 
 def get_messages(items, head=''):
 	# Creates the list of items and splits it in string max 4096 char long
@@ -25,3 +26,10 @@ def parse(text):
 		if is_item(line):
 			items.append(Item.from_string(line))
 	return items
+
+def add(items):
+	# Adds a list of items to the database
+	assert(isinstance(items, (tuple, list)))
+	items = list(filter(lambda item: database.items.get_single(item.name) is None, items))
+	database.items.add(items)
+	return len(items)
