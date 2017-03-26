@@ -23,6 +23,13 @@ def get_multiple(filt):
 	items = map(lambda item: utils.item.Item(item['name'], item['rarity'], item['usable'], item['id']), items)
 	return list(items)
 
+def get_last(count):
+	assert(type(count) is int)
+	sql = 'SELECT * FROM items ORDER BY id DESC LIMIT %s'
+	items = _read(sql, (count,))
+	items = map(lambda item: utils.item.Item(item['name'], item['rarity'], item['usable'], item['id']), items)
+	return list(items)
+
 def add(items):
 	assert(all(map(lambda x: type(x) is utils.item.Item, items)))
 	sql = 'INSERT INTO items(name, rarity, usable) VALUES (%s, %s, %s)'
