@@ -2,6 +2,7 @@ from telegram.ext import CommandHandler, Updater
 import logging
 
 import commands as cmds
+import messages as msgs
 import settings
 
 # Setting up the logger
@@ -13,6 +14,8 @@ def main():
 	dp = updater.dispatcher
 
 	for handler in cmds.handlers:
+		dp.add_handler(handler)
+	for handler in msgs.handlers:
 		dp.add_handler(handler)
 
 	updater.start_polling()

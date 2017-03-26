@@ -35,3 +35,23 @@ class ItemFilter:
 		rarity = list(map(str.upper, args[:name_ind]))
 		name = args[name_ind:]
 		return ItemFilter(rarity=rarity, name=name)
+
+class UserFilter:
+	def __init__(self, username=None, userid=None):
+		assert((username is not None) != (userid is not None))
+		assert(username is None or type(username) is str)
+		assert(userid is None or type(userid) is int)
+		self.username = username
+		self.userid = userid
+
+	def get_sql(self):
+		if self.username is not None:
+			return 'username = %s'
+		elif self.userid is not None:
+			return 'id = %s'
+
+	def get_args(self):
+		if self.username is not None:
+			return (self.username,)
+		elif self.userid is not None:
+			return (self.userid,)

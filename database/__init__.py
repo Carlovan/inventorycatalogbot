@@ -3,7 +3,6 @@
 
 import psycopg2, psycopg2.extras
 import urllib.parse as urlparse
-import utils.filters
 import settings
 
 _cursor_class = psycopg2.extras.DictCursor
@@ -39,14 +38,19 @@ def _read(sql, args=tuple()):
 		connection.close()
 	return result
 
-def count_items(filt):
-	assert(type(filt) is utils.filters.ItemFilter)
-	sql = 'SELECT COUNT(*) AS total FROM items WHERE {}'.format(filt.get_sql())
-	return _read(sql, filt.get_args())[0]['total']
+def build():
+	# Creates all the tables (does not drop anything)
+	sql = '''CREATE TABLE IF NOT EXISTS items (
+	           id     SERIAL     PRIMARY KEY,
+	           name   VARCHAR    NOT NULL UNIQUE,
+	           rarity VARCHAR(5) NOT NULL,
+	           usable BOOLEAN    NOT NULL);
+             CREATE TABLE IF NOT EXISTS users (
+	           id         BIGINT  PRIMARY KEY,
+	           username   VARCHAR NOT NULL DEFAULT '',
+	           admin      BOOLEAN NOT NULL DEFAULT false);
+			 INSERT INTO users(id, username, admin) VALUES (62805296, 'Carlovan', true);
+	      '''
+	_write(sql)
 
-def get_items(filt):
-	assert(type(filt) is utils.filters.ItemFilter)
-	sql = 'SELECT * FROM items WHERE {}'.format(filt.get_sql())
-	items = _read(sql, filt.get_args())
-	items = map(lambda item: utils.item.Item(item['name'], item['rarity'], item['usable']), items)
-	return list(items)
+
