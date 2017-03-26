@@ -9,3 +9,8 @@ def get_multiple(filt):
 	sql = 'SELECT * FROM users WHERE {}'.format(filt.get_sql())
 	users = _read(sql, filt.get_args())
 	return None if len(users) == 0 else utils.user.User(users[0]['id'], users[0]['username'], users[0]['admin'])
+
+def get_all():
+	sql = 'SELECT * FROM users;'
+	users = _read(sql)
+	return list(map(lambda user: utils.user.User(user['id'], user['username'], user['admin']), users))
