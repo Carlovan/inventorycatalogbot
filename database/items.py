@@ -14,13 +14,13 @@ def get_single(name):
 	assert(type(name) is str)
 	sql = 'SELECT * FROM items WHERE name = %s'
 	item = _read(sql, (name,))
-	return None if len(item) == 0 else utils.item.Item(item[0]['name'], item[0]['rarity'], item[0]['usable'])
+	return None if len(item) == 0 else utils.item.Item(item[0]['name'], item[0]['rarity'], item[0]['usable'], item[0]['id'])
 
 def get_multiple(filt):
 	assert(type(filt) is utils.filters.ItemFilter)
 	sql = 'SELECT * FROM items WHERE {}'.format(filt.get_sql())
 	items = _read(sql, filt.get_args())
-	items = map(lambda item: utils.item.Item(item['name'], item['rarity'], item['usable']), items)
+	items = map(lambda item: utils.item.Item(item['name'], item['rarity'], item['usable'], item['id']), items)
 	return list(items)
 
 def add(items):
@@ -29,3 +29,7 @@ def add(items):
 	for item in items:
 		_write(sql, (item.name, item.rarity, item.usable))
 
+def delete(itemid):
+	# Deletes the item with the given id
+	sql = 'DELETE FROM items WHERE id = %s'
+	_write(sql, (itemid,))
