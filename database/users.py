@@ -14,3 +14,7 @@ def get_all():
 	sql = 'SELECT * FROM users;'
 	users = _read(sql)
 	return list(map(lambda user: utils.user.User(user['id'], user['username'], user['admin']), users))
+
+def add_new(user):
+	sql = 'INSERT INTO users(id, username, admin) VALUES (%s, %s, %s);'
+	_write(sql, (user.userid, user.username, user.admin))
