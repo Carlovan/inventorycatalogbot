@@ -4,7 +4,7 @@ from . import _read, _write
 import utils.user
 import utils.filters
 
-def get_multiple(filt):
+def get_single(filt):
 	assert(type(filt) is utils.filters.UserFilter)
 	sql = 'SELECT * FROM users WHERE {}'.format(filt.get_sql())
 	users = _read(sql, filt.get_args())

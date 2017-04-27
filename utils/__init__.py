@@ -16,5 +16,5 @@ def is_from_ib(update):
 def is_from_admin(update):
 	# Gets a bot update and checks if it's from an admin
 	filt = UserFilter(userid=update.message.from_user.id)
-	user = database.users.get_multiple(filt)
+	user = database.users.get_single(filt)
 	return user.admin
