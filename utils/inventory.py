@@ -4,12 +4,11 @@
 from .item import Item, is_item
 import database.items
 
-def get_messages(items, head=''):
+def get_messages(items, head='', show_id=False):
 	# Creates the list of items and splits it in string max 4096 char long
-	items = map(str, items)
 	res = [head+'\n']
 	for item in items:
-		item = f'- {item}\n'
+		item = '-{1} {0}\n'.format(item, item.itemid if show_id else '')
 		if len(res[-1]) + len(item) > 4096:
 			res.append('')
 		res[-1] += item

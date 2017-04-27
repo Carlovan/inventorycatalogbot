@@ -4,7 +4,7 @@
 import database.users
 from .filters import UserFilter
 
-def is_fromIB(update):
+def is_from_ib(update):
 	# Gets a bot update and checks if it's from @InventoryBot
 	message = update.message
 	valid = message.forward_from is not None and message.forward_from.username == 'InventoryBot'
@@ -16,5 +16,5 @@ def is_fromIB(update):
 def is_from_admin(update):
 	# Gets a bot update and checks if it's from an admin
 	filt = UserFilter(userid=update.message.from_user.id)
-	user = database.user.get_multiple(filt)
+	user = database.users.get_single(filt)
 	return user.admin

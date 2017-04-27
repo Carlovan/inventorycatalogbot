@@ -12,14 +12,16 @@ _rarity_regex = re.compile(_rarity_regex_text)
 _item_regex   = re.compile(_item_regex_text)
 
 class Item:
-	def __init__(self, name, rarity, usable):
+	def __init__(self, name, rarity, usable, itemid=None):
 		assert(type(name) is str)
 		assert(type(rarity) is str)
 		assert(type(usable) is bool)
+		assert(type(itemid) is int or itemid is None)
 		assert(is_rarity(rarity))
 		self.name = name
 		self.rarity = rarity
 		self.usable = usable
+		self.itemid = itemid
 
 	def __str__(self):
 		return f'{self.name} [{self.rarity}]{{}}'.format(' [usabile]' if self.usable else '')
