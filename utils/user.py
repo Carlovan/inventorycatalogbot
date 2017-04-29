@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 # This module contains class and functions to work with users
 
+import telegram.user
+
 class User:
 	def __init__(self, userid, username, admin):
 		assert(type(userid) is int)
@@ -9,6 +11,9 @@ class User:
 		self.userid = userid
 		self.username = username
 		self.admin = admin
-	
+	@staticmethod
+	def from_telegram(tuser):
+		assert(type(tuser) is telegram.user.User)
+		return User(tuser.id, tuser.username, False)
 	def __str__(self):
 		return f'{self.username} [{self.userid}]{{}}'.format(' [admin]' if self.admin else '')

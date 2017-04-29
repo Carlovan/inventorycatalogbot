@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from . import _read, _write
+import utils.inventory
 import utils.item
 import utils.filters
 
@@ -20,15 +21,15 @@ def get_multiple(filt):
 	assert(type(filt) is utils.filters.ItemFilter)
 	sql = 'SELECT * FROM items WHERE {}'.format(filt.get_sql())
 	items = _read(sql, filt.get_args())
-	items = map(lambda item: utils.item.Item(item['name'], item['rarity'], item['usable'], item['id']), items)
-	return list(items)
+	items = list(map(lambda item: utils.item.Item(item['name'], item['rarity'], item['usable'], item['id']), items))
+	return utils.inventory.Inventory(items)
 
 def get_last(count):
 	assert(type(count) is int)
 	sql = 'SELECT * FROM items ORDER BY id DESC LIMIT %s'
 	items = _read(sql, (count,))
-	items = map(lambda item: utils.item.Item(item['name'], item['rarity'], item['usable'], item['id']), items)
-	return list(items)
+	items = list(map(lambda item: utils.item.Item(item['name'], item['rarity'], item['usable'], item['id']), items))
+	return utils.inventory.Inventory(items)
 
 def add(items):
 	assert(all(map(lambda x: type(x) is utils.item.Item, items)))

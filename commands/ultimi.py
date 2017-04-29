@@ -5,7 +5,7 @@ import database.items
 import utils.inventory
 
 def run(bot, update):
-	items = database.items.get_last(10)
-	messages = utils.inventory.get_messages(items, head='Gli ultimi oggetti inseriti nel catalogo:')
+	inv = database.items.get_last(10)
+	messages = inv.get_messages(head='Gli ultimi oggetti inseriti nel catalogo:')
 	for msg in messages:
 		update.message.reply_text(msg)
