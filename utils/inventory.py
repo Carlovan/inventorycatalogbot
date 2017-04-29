@@ -37,3 +37,9 @@ def add(inv):
 	items = list(filter(lambda item: database.items.get_single(item.name) is None, inv.items))
 	database.items.add(items)
 	return len(items)
+
+def received(inv):
+	# Function to call when an inventory is received from the user.
+	# Then this function will choose what action to perform on that inventory
+	assert(type(inv) is Inventory)
+	return add(inv) # For now it just adds the inventory to the database
