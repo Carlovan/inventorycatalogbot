@@ -45,11 +45,12 @@ def build():
 	           name   VARCHAR    NOT NULL UNIQUE,
 	           rarity VARCHAR(5) NOT NULL,
 	           usable BOOLEAN    NOT NULL);
-             CREATE TABLE IF NOT EXISTS users (
+	         CREATE TABLE IF NOT EXISTS users (
 	           id         BIGINT  PRIMARY KEY,
 	           username   VARCHAR NOT NULL DEFAULT '',
-	           admin      BOOLEAN NOT NULL DEFAULT false);
-			 INSERT INTO users(id, username, admin) VALUES (62805296, 'Carlovan', true);
+	           admin      BOOLEAN NOT NULL DEFAULT false,
+	           state      VARCHAR);
+	         INSERT INTO users(id, username, admin) VALUES (62805296, 'Carlovan', true) ON CONFLICT DO NOTHING;
 	      '''
 	_write(sql)
 
