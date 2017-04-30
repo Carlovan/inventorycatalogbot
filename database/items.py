@@ -5,6 +5,9 @@ import utils.inventory
 import utils.item
 import utils.filters
 
+def _from_db_format(item):
+	return utils.item.Item(item['name'], item['rarity'], item['usable'], item['id'])
+
 def count(filt):
 	assert(type(filt) is utils.filters.ItemFilter)
 	sql = 'SELECT COUNT(*) AS total FROM items WHERE {}'.format(filt.get_sql())
@@ -15,20 +18,20 @@ def get_single(name):
 	assert(type(name) is str)
 	sql = 'SELECT * FROM items WHERE name = %s'
 	item = _read(sql, (name,))
-	return None if len(item) == 0 else utils.item.Item(item[0]['name'], item[0]['rarity'], item[0]['usable'], item[0]['id'])
+	return None if len(item) == 0 else _from_db_format(item[0])
 
 def get_multiple(filt):
 	assert(type(filt) is utils.filters.ItemFilter)
 	sql = 'SELECT * FROM items WHERE {}'.format(filt.get_sql())
 	items = _read(sql, filt.get_args())
-	items = list(map(lambda item: utils.item.Item(item['name'], item['rarity'], item['usable'], item['id']), items))
+	items = list(map(_from_db_format, items))
 	return utils.inventory.Inventory(items)
 
 def get_last(count):
 	assert(type(count) is int)
 	sql = 'SELECT * FROM items ORDER BY id DESC LIMIT %s'
 	items = _read(sql, (count,))
-	items = list(map(lambda item: utils.item.Item(item['name'], item['rarity'], item['usable'], item['id']), items))
+	items = list(map(_from_db_format, items))
 	return utils.inventory.Inventory(items)
 
 def add(items):
