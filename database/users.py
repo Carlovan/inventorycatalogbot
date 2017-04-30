@@ -22,3 +22,7 @@ def get_all():
 def add_new(user):
 	sql = 'INSERT INTO users(id, username, admin, state) VALUES (%s, %s, %s, %s);'
 	_write(sql, (user.userid, user.username, user.admin, user.state.value))
+
+def update(user):
+	sql = 'UPDATE users SET username = %s, admin = %s, state = %s WHERE id = %s;'
+	_write(sql, (user.username, user.admin, user.state.value, user.userid))
