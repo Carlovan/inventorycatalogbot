@@ -4,4 +4,4 @@ import enum
 
 class UserState(enum.Enum):
 	NONE = None
-
+	CONFRONTA = 'confronta'

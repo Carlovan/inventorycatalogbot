@@ -3,6 +3,9 @@
 
 from .item import Item, is_item
 import database.items
+import database.users
+from utils.filters import UserFilter
+from utils.states import UserState
 
 class Inventory:
 	def __init__(self, items, user=None):
@@ -18,6 +21,12 @@ class Inventory:
 				res.append('')
 			res[-1] += item
 		return res
+	def ensure_data(self):
+		# Reads the data from the DB
+		if self.user:
+			self.user = database.users.get_single(UserFilter(userid=self.user.userid))
+		for i in range(len(self.items)):
+			self.items[i] = database.items.get_single(self.items[i].name)
 	@staticmethod
 	def parse(text, *args, **kwargs):
 		# Parses an inventory message
@@ -42,4 +51,9 @@ def received(inv):
 	# Function to call when an inventory is received from the user.
 	# Then this function will choose what action to perform on that inventory
 	assert(type(inv) is Inventory)
-	return add(inv) # For now it just adds the inventory to the database
+	inv.ensure_data()
+	if inv.user.state == UserState.NONE:
+		return add(inv)
+	elif inv.user.state == UserState.CONFRONTA:
+		database.confronta_items.add_inventory(inv)
+		return 'confronta'

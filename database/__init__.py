@@ -50,6 +50,10 @@ def build():
 	           username   VARCHAR NOT NULL DEFAULT '',
 	           admin      BOOLEAN NOT NULL DEFAULT false,
 	           state      VARCHAR);
+	         CREATE TABLE IF NOT EXISTS confronta_items (
+	           itemid INTEGER REFERENCES items(id),
+	           userid BIGINT  REFERENCES users(id),
+	           PRIMARY KEY(itemid, userid));
 	         INSERT INTO users(id, username, admin) VALUES (62805296, 'Carlovan', true) ON CONFLICT DO NOTHING;
 	      '''
 	_write(sql)
