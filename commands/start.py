@@ -8,5 +8,5 @@ def run(bot, update):
 	text += '\n Puoi leggere nuovamente questo messaggio con /help .'
 	user = update.message.from_user
 	if database.users.get_single(utils.filters.UserFilter(userid=user.id)) == None:
-		database.users.add_new(utils.user.User(user.id, user.username, False))
+		database.users.add_new(utils.user.User.from_telegram(update.message.from_user))
 	update.message.reply_text(text, parse_mode='HTML')
