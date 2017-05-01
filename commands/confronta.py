@@ -11,3 +11,7 @@ def run(bot, update, args):
 		user.state = UserState.CONFRONTA
 		database.users.update(user)
 		update.message.reply_text('Ora mandami il tuo inventario. Quando hai finito usa /fine. Per cancellare /annulla.')
+	elif user.state == UserState.CONFRONTA:
+		user.other = ' '.join(args)
+		database.users.update(user)
+		update.message.reply_text('Filtro aggiornato')
