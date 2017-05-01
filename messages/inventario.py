@@ -3,7 +3,9 @@
 
 import utils.inventory
 import utils.user
+from telegram.ext.dispatcher import run_async
 
+@run_async
 def run(bot, update):
 	if utils.is_from_ib(update):
 		user = utils.user.User.from_telegram(update.message.from_user)
