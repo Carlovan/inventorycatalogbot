@@ -58,9 +58,10 @@ def received(inv):
 	# Function to call when an inventory is received from the user.
 	# Then this function will choose what action to perform on that inventory
 	assert(type(inv) is Inventory)
+	count = add(inv)
 	inv.ensure_data()
 	if inv.user.state == UserState.NONE:
-		return add(inv)
+		return count
 	elif inv.user.state == UserState.CONFRONTA:
 		database.confronta_items.add_inventory(inv)
-		return 'confronta'
+		return count
