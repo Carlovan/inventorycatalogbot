@@ -3,7 +3,9 @@
 import database.users
 from utils.filters import UserFilter
 from utils.states import UserState
+from telegram.ext.dispatcher import run_async
 
+@run_async
 def run(bot, update, args):
 	user = database.users.get_single(UserFilter(userid=update.message.from_user.id))
 	if user.state == UserState.NONE:
