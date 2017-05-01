@@ -18,7 +18,12 @@ def main():
 	for handler in msgs.handlers:
 		dp.add_handler(handler)
 
-	updater.start_polling()
+	if settings.webhook is None:
+		updater.start_polling()
+		updater.bot.set_webhook(url='')
+	else:
+		updater.bot.set_webhook(url=settings.webhook)
+		updater.start_webhook()
 	logger.info('Bot started')
 	updater.idle()
 
