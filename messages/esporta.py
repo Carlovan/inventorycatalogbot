@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Handles an inventory message
+# Handles an esporta message
 
 import utils.inventory
 import utils.user
@@ -18,7 +18,6 @@ def run(bot, update):
 		os.remove(filename)
 		content = re.sub(r'[^\S\n]+', ' ', content) # Replace any group of consecutive blanks (except newline) with a single whitespace
 		content = re.sub(r'^(\d)+x +(.+)$', r'- \2 x\1', content, flags=re.MULTILINE) # makes every lline in the same format as the command /inventario
-		update.message.reply_text(content[:1000])
 		inv = utils.inventory.Inventory.parse(content, user)
 		count = utils.inventory.received(inv)
 		update.message.reply_text(f'Hai aggiunto {count} oggetti.')

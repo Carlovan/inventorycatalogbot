@@ -20,7 +20,6 @@ def run(bot, update):
 		database.confronta_items.clear(user)
 		database.users.update(user)
 
-		update.message.reply_text('Your query was {}'.format(query))
 		messages = diff.get_messages(head='Ti mancano {} oggetti:'.format(len(diff.items)))
 		for m in messages:
 			update.message.reply_text(m)
