@@ -19,6 +19,7 @@ def main():
 		dp.add_handler(handler)
 
 	updater.start_polling()
+	logger.info('Bot started')
 	updater.idle()
 
 if __name__ == '__main__':
