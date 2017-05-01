@@ -6,7 +6,7 @@ import utils.filters
 import utils.states
 
 def _from_db_format(user):
-	return utils.user.User(user['id'], user['username'], user['admin'], utils.states.UserState(user['state']))
+	return utils.user.User(user['id'], user['username'], user['admin'], utils.states.UserState(user['state']), user['other'])
 
 def get_single(filt):
 	assert(type(filt) is utils.filters.UserFilter)
@@ -24,5 +24,5 @@ def add_new(user):
 	_write(sql, (user.userid, user.username, user.admin, user.state.value))
 
 def update(user):
-	sql = 'UPDATE users SET username = %s, admin = %s, state = %s WHERE id = %s;'
-	_write(sql, (user.username, user.admin, user.state.value, user.userid))
+	sql = 'UPDATE users SET username = %s, admin = %s, state = %s, other = %s WHERE id = %s;'
+	_write(sql, (user.username, user.admin, user.state.value, user.other, user.userid))

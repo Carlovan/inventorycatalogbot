@@ -39,7 +39,14 @@ class Inventory:
 			if is_item(line):
 				items.append(Item.from_string(line))
 		return Inventory(items, *args, **kwargs)
-
+	def __sub__(self, other):
+		if not type(other) is Inventory:
+			return NotImplemented
+		items = []
+		for i in self.items:
+			if i not in other.items:
+				items.append(i)
+		return Inventory(items, self.user)
 def add(inv):
 	# Adds a list of items to the database
 	assert(type(inv) is Inventory)

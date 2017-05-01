@@ -49,7 +49,8 @@ def build():
 	           id         BIGINT  PRIMARY KEY,
 	           username   VARCHAR NOT NULL DEFAULT '',
 	           admin      BOOLEAN NOT NULL DEFAULT false,
-	           state      VARCHAR);
+	           state      VARCHAR,
+	           other      VARCHAR); -- Useful to store additional data about the user state
 	         CREATE TABLE IF NOT EXISTS confronta_items (
 	           itemid INTEGER REFERENCES items(id),
 	           userid BIGINT  REFERENCES users(id),

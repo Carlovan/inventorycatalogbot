@@ -2,16 +2,14 @@
 
 import database.users
 import database.confronta_items
-from utils.filters import UserFilter
 from utils.states import UserState
+from utils.filters import UserFilter
 
 def run(bot, update):
 	user = database.users.get_single(UserFilter(userid=update.message.from_user.id))
 	if user.state == UserState.CONFRONTA:
 		user.state = UserState.NONE
-		inv = database.confronta_items.get(user)
+		user.other = None
 		database.confronta_items.clear(user)
 		database.users.update(user)
-		messages = inv.get_messages()
-		for m in messages:
-			update.message.reply_text(m)
+		update.message.reply_text('Comando <code>confronta</code> annullato.', parse_mode='HTML')
