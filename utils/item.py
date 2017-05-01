@@ -10,6 +10,9 @@ _rarity_regex_text =  r'(?P<rarity>{})'.format('|'.join(_rarities).replace('+', 
 _item_regex_text   = fr'(?P<name>.*?)\s+\[{_rarity_regex_text}\](?P<usable> \[usabile\])?'
 _rarity_regex = re.compile(_rarity_regex_text)
 _item_regex   = re.compile(_item_regex_text)
+_name_exceptions = {re.compile('^un po\' di Pongo.*'): 'un po\' di Pongo',
+                    re.compile('^il Libro degli Ospiti.*'): 'il Libro degli Ospiti',
+                    re.compile('^un Pakkomon di nome.*'): 'un Pakkomon'}
 
 class Item:
 	def __init__(self, name, rarity, usable, itemid=None):
@@ -40,10 +43,17 @@ class Item:
 				name2 = name2[len(art):]
 		return name1 < name2
 
+	def __eq__(self, other):
+		return type(other) is Item and self.name == other.name and self.rarity == other.rarity and self.usable == other.usable
+
 	@staticmethod
 	def from_string(text):
 		match = _item_regex.fullmatch(text)
 		name = match.group('name')
+		for ex in _name_exceptions:
+			if ex.match(name) != None:
+				name = _name_exceptions[ex]
+				break
 		rarity = match.group('rarity')
 		usable = match.group('usable') is not None
 		return Item(name, rarity, usable)

@@ -45,11 +45,17 @@ def build():
 	           name   VARCHAR    NOT NULL UNIQUE,
 	           rarity VARCHAR(5) NOT NULL,
 	           usable BOOLEAN    NOT NULL);
-             CREATE TABLE IF NOT EXISTS users (
+	         CREATE TABLE IF NOT EXISTS users (
 	           id         BIGINT  PRIMARY KEY,
 	           username   VARCHAR NOT NULL DEFAULT '',
-	           admin      BOOLEAN NOT NULL DEFAULT false);
-			 INSERT INTO users(id, username, admin) VALUES (62805296, 'Carlovan', true);
+	           admin      BOOLEAN NOT NULL DEFAULT false,
+	           state      VARCHAR,
+	           other      VARCHAR); -- Useful to store additional data about the user state
+	         CREATE TABLE IF NOT EXISTS confronta_items (
+	           itemid INTEGER REFERENCES items(id),
+	           userid BIGINT  REFERENCES users(id),
+	           PRIMARY KEY(itemid, userid));
+	         INSERT INTO users(id, username, admin) VALUES (62805296, 'Carlovan', true) ON CONFLICT DO NOTHING;
 	      '''
 	_write(sql)
 
