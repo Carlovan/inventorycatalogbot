@@ -4,6 +4,9 @@ from . import _read, _write
 import utils.inventory
 import utils.item
 import utils.filters
+import logging
+
+logger = logging.getLogger(__name__)
 
 def _from_db_format(item):
 	return utils.item.Item(item['name'], item['rarity'], item['usable'], item['id'])

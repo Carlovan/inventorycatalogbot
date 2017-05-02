@@ -5,6 +5,8 @@ import database.confronta_items
 from utils.states import UserState
 from utils.filters import UserFilter
 
+pass_args = False
+
 def run(bot, update):
 	user = database.users.get_single(UserFilter(userid=update.message.from_user.id))
 	if user.state == UserState.CONFRONTA:

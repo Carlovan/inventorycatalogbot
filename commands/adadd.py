@@ -3,6 +3,8 @@
 
 import utils
 
+pass_args = True
+
 def run(bot, update, args):
 	if utils.is_from_admin(update):
 		item = utils.item.Item.from_string(' '.join(args))

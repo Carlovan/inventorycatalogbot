@@ -9,5 +9,5 @@ cmd_list = ['adadd', 'addelete', 'adinit', 'adinventario', 'adsetadmin', 'broadc
 handlers = []
 for c in cmd_list:
 	m = importlib.import_module('.'+c, __name__)
-	args = m.run.__code__.co_argcount == 3 # If the run function takes 3 arguments, the args from the command are required
+	args = m.pass_args
 	handlers.append(CommandHandler(c, m.run, pass_args=args))

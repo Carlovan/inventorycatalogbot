@@ -2,6 +2,8 @@
 import database.items
 from utils.filters import ItemFilter
 
+pass_args = True
+
 def run(bot, update, args):
 	filt = ItemFilter.from_list(args)
 	count = database.items.count(filt)

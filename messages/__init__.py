@@ -12,7 +12,7 @@ msg_list = [('inventario','@.*, possiedi( \(pg \d+/\d+\))?:\n.*'),
 handlers = []
 for c in msg_list:
 	m = importlib.import_module('.'+c[0], __name__)
-	groups = m.run.__code__.co_argcount == 3 # If the run function takes 3 arguments, groupdict from the regex is required
+	groups = m.pass_args
 	if type(c[1]) is str:
 		handlers.append(RegexHandler(c[1], m.run, pass_groupdict=groups))
 	else:

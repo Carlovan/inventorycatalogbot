@@ -14,9 +14,9 @@ def clear(user):
 
 def add_inventory(inv):
 	assert(type(inv) is utils.inventory.Inventory)
-	sql = 'INSERT INTO confronta_items(userid, itemid) VALUES (%s, %s) ON CONFLICT DO NOTHING;'
+	sql = 'INSERT INTO confronta_items(userid, itemid) SELECT %s, %s WHERE NOT EXISTS (SELECT 1 FROM confronta_items WHERE userid = %s AND itemid = %s);'
 	for item in inv.items:
-		_write(sql, (inv.user.userid, item.itemid))
+		_write(sql, (inv.user.userid, item.itemid)*2)
 
 def get(user):
 	assert(type(user) is utils.user.User)

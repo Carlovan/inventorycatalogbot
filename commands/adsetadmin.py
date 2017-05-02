@@ -4,6 +4,8 @@ import database.users
 import utils
 from utils.filters import UserFilter
 
+pass_args = True
+
 def run(bot, update, args):
 	if utils.is_from_admin(update):
 		if len(args) != 2:

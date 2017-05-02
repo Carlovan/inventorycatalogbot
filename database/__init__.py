@@ -51,11 +51,13 @@ def build():
 	           admin      BOOLEAN NOT NULL DEFAULT false,
 	           state      VARCHAR,
 	           other      VARCHAR); -- Useful to store additional data about the user state
+	         INSERT INTO users(id, username, admin)
+               SELECT 62805296, 'Carlovan', true
+               WHERE NOT EXISTS (SELECT * FROM users WHERE id != 62805296);
 	         CREATE TABLE IF NOT EXISTS confronta_items (
 	           itemid INTEGER REFERENCES items(id),
 	           userid BIGINT  REFERENCES users(id),
 	           PRIMARY KEY(itemid, userid));
-	         INSERT INTO users(id, username, admin) VALUES (62805296, 'Carlovan', true) ON CONFLICT DO NOTHING;
 	      '''
 	_write(sql)
 

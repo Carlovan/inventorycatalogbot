@@ -61,7 +61,7 @@ def received(inv):
 	count = add(inv)
 	inv.ensure_data()
 	if inv.user.state == UserState.NONE:
-		return count
+		return f'Hai aggiunto {count} oggetti.'
 	elif inv.user.state == UserState.CONFRONTA:
 		database.confronta_items.add_inventory(inv)
-		return count
+		return 'Ok'

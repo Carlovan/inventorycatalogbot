@@ -5,6 +5,8 @@ import utils
 import telegram
 import database.users
 
+pass_args = True
+
 def run(bot, update, args):
 	if utils.is_from_admin(update):
 		text = ' '.join(args)

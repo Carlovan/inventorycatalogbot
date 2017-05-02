@@ -4,6 +4,8 @@
 import database.items
 import utils.inventory
 
+pass_args = False
+
 def run(bot, update):
 	inv = database.items.get_last(10)
 	messages = inv.get_messages(head='Gli ultimi oggetti inseriti nel catalogo:')
