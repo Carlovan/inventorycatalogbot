@@ -8,6 +8,8 @@ import time
 import re
 from telegram.ext.dispatcher import run_async
 
+pass_args = False
+
 @run_async
 def run(bot, update):
 	if utils.is_from_ib(update):
@@ -21,5 +23,5 @@ def run(bot, update):
 		content = re.sub(r'[^\S\n]+', ' ', content) # Replace any group of consecutive blanks (except newline) with a single whitespace
 		content = re.sub(r'^(\d)+x +(.+)$', r'- \2 x\1', content, flags=re.MULTILINE) # makes every lline in the same format as the command /inventario
 		inv = utils.inventory.Inventory.parse(content, user)
-		count = utils.inventory.received(inv)
-		update.message.reply_text(f'Hai aggiunto {count} oggetti.')
+		msg = utils.inventory.received(inv)
+		update.message.reply_text(msg)

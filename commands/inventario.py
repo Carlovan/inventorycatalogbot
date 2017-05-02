@@ -2,6 +2,8 @@ import database.items
 from utils.filters import ItemFilter
 from telegram.ext.dispatcher import run_async
 
+pass_args = True
+
 @run_async
 def run(bot, update, args):
 	filt = ItemFilter.from_list(args)

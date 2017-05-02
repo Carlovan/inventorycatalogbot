@@ -2,6 +2,8 @@
 
 import utils.help
 
+pass_args = False
+
 def run(bot, update):
 	text = utils.help.commands_text
 	if utils.is_from_admin(update):
