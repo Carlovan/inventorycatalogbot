@@ -46,7 +46,7 @@ class ItemFilter:
 		name_ind = tmp.index(False) if False in tmp else len(tmp)
 		rarity = list(map(str.upper, args[:name_ind]))
 		name = args[name_ind:]
-		usable = False
+		usable = None
 		if '[usabile]' in name:
 			usable = True
 			name.remove('[usabile]')
