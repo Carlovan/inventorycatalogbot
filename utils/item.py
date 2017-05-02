@@ -21,7 +21,7 @@ class Item:
 		assert(type(usable) is bool)
 		assert(type(itemid) is int or itemid is None)
 		assert(is_rarity(rarity))
-		self.name = name
+		self.name = name.replace('\xa0', ' ')
 		self.rarity = rarity
 		self.usable = usable
 		self.itemid = itemid
