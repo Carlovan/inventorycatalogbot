@@ -17,3 +17,5 @@ def run(bot, update):
 		dbconfrontaitems.clear(user)
 		dbusers.update(user)
 		update.message.reply_text('Comando <code>confronta</code> annullato.', parse_mode='HTML')
+	elif user.state == UserState.CONFRONTA_ADDING:
+		update.message.reply_text('Aspetta il messaggio di conferma!')

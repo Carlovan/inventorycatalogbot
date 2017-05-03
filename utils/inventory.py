@@ -68,5 +68,10 @@ def received(inv):
 		return f'Hai aggiunto {count} oggetti.'
 	elif inv.user.state == UserState.CONFRONTA:
 		dbconfrontaitems = database.confronta_items.DbConfrontaItems()
+		dbusers = database.users.DbUsers()
+		inv.user.state = UserState.CONFRONTA_ADDING
+		dbusers.update(inv.user)
 		dbconfrontaitems.add_inventory(inv)
+		inv.user.state = UserState.CONFRONTA
+		dbusers.update(inv.user)
 		return 'Ok'

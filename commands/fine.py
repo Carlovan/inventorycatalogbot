@@ -29,3 +29,5 @@ def run(bot, update):
 		messages = diff.get_messages(head='Ti mancano {} oggetti:'.format(len(diff.items)))
 		for m in messages:
 			update.message.reply_text(m)
+	elif user.state == UserState.CONFRONTA_ADDING:
+		update.message.reply_text('Aspetta il messaggio di conferma!')
