@@ -7,7 +7,8 @@ import utils.inventory
 pass_args = False
 
 def run(bot, update):
-	inv = database.items.get_last(10)
+	dbitems = database.items.DbItems()
+	inv = dbitems.get_last(10)
 	messages = inv.get_messages(head='Gli ultimi oggetti inseriti nel catalogo:')
 	for msg in messages:
 		update.message.reply_text(msg)

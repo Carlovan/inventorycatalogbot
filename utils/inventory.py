@@ -4,6 +4,7 @@
 from .item import Item, is_item
 import database.items
 import database.users
+import database.confronta_items
 from utils.filters import UserFilter
 from utils.states import UserState
 
@@ -23,10 +24,12 @@ class Inventory:
 		return res
 	def ensure_data(self):
 		# Reads the data from the DB
+		dbitems = database.items.DbItems()
+		dbusers = database.users.DbUsers()
 		if self.user:
-			self.user = database.users.get_single(UserFilter(userid=self.user.userid))
+			self.user = dbusers.get_single(UserFilter(userid=self.user.userid))
 		for i in range(len(self.items)):
-			self.items[i] = database.items.get_single(self.items[i].name)
+			self.items[i] = dbitems.get_single(self.items[i].name)
 	@staticmethod
 	def parse(text, *args, **kwargs):
 		# Parses an inventory message
@@ -50,8 +53,9 @@ class Inventory:
 def add(inv):
 	# Adds a list of items to the database
 	assert(type(inv) is Inventory)
-	items = list(filter(lambda item: database.items.get_single(item.name) is None, inv.items))
-	database.items.add(items)
+	dbitems = database.items.DbItems()
+	items = list(filter(lambda item: dbitems.get_single(item.name) is None, inv.items))
+	dbitems.add(items)
 	return len(items)
 
 def received(inv):
@@ -63,5 +67,6 @@ def received(inv):
 	if inv.user.state == UserState.NONE:
 		return f'Hai aggiunto {count} oggetti.'
 	elif inv.user.state == UserState.CONFRONTA:
-		database.confronta_items.add_inventory(inv)
+		dbconfrontaitems = database.confronta_items.DbConfrontaItems()
+		dbconfrontaitems.add_inventory(inv)
 		return 'Ok'

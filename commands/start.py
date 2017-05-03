@@ -7,6 +7,7 @@ from utils.filters import UserFilter
 pass_args = False
 
 def run(bot, update):
+	dbusers = database.users.DbUsers()
 	#text = utils.help.main_text
 	#text += '\n Puoi leggere nuovamente questo messaggio con /help .'
 	text = '''Changelog felice!
@@ -17,10 +18,10 @@ Ho anche cambiato server quindi non dovrete piu aspettare i soliti 10 secondi og
 
 Per info generali /help. Per info sui comandi (consigliata la lettura) /helpcomandi.
 Per segnalazioni @Carlovan.'''
-	user = database.users.get_single(UserFilter(userid=update.message.from_user.id))
+	user = dbusers.get_single(UserFilter(userid=update.message.from_user.id))
 	if user == None:
-		database.users.add_new(utils.user.User.from_telegram(update.message.from_user))
+		dbusers.add_new(utils.user.User.from_telegram(update.message.from_user))
 	else:
 		user.username = update.message.from_user.username
-		database.users.update(user)
+		dbusers.update(user)
 	update.message.reply_text(text, parse_mode='HTML')

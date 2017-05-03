@@ -11,7 +11,8 @@ def run(bot, update, args):
 		if not all(map(str.isdigit, args)):
 			update.message.reply_text('Specifica gli id degli item da eliminare')
 		else:
+			dbitems = database.items.DbItems()
 			for itemid in args:
 				itemid = int(itemid)
-				database.items.delete(itemid)
+				dbitems.delete(itemid)
 			update.message.reply_text('Fatto.')
