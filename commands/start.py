@@ -3,6 +3,8 @@
 import utils.help
 import utils.user, database.users
 from utils.filters import UserFilter
+import logging
+logger = logging.getLogger(__name__)
 
 pass_args = False
 
@@ -20,8 +22,11 @@ Per info generali /help. Per info sui comandi (consigliata la lettura) /helpcoma
 Per segnalazioni @Carlovan.'''
 	user = dbusers.get_single(UserFilter(userid=update.message.from_user.id))
 	if user == None:
-		dbusers.add_new(utils.user.User.from_telegram(update.message.from_user))
+		new_user = utils.user.User.from_telegram(update.message.from_user)
+		dbusers.add_new(new_user)
+		logger.info('User {} just started the bot'.format(new_user.username))
 	else:
 		user.username = update.message.from_user.username
 		dbusers.update(user)
 	update.message.reply_text(text, parse_mode='HTML')
+	

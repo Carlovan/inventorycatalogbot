@@ -7,6 +7,8 @@ import database.users
 import database.confronta_items
 from utils.filters import UserFilter
 from utils.states import UserState
+import logging
+logger = logging.getLogger(__name__)
 
 class Inventory:
 	def __init__(self, items, user=None):
@@ -65,8 +67,10 @@ def received(inv):
 	count = add(inv)
 	inv.ensure_data()
 	if inv.user.state == UserState.NONE:
+		logger.info('User {} added {} items'.format(inv.user.username, count))
 		return f'Hai aggiunto {count} oggetti.'
 	elif inv.user.state == UserState.CONFRONTA:
+		logger.info('User {} added items to confronta'.format(inv.user.username))
 		dbconfrontaitems = database.confronta_items.DbConfrontaItems()
 		dbusers = database.users.DbUsers()
 		inv.user.state = UserState.CONFRONTA_ADDING
