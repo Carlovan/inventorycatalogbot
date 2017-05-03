@@ -4,6 +4,9 @@
 import psycopg2, psycopg2.extras
 import urllib.parse as urlparse
 import settings
+import logging
+
+logger = logging.getLogger(__name__)
 
 _cursor_class = psycopg2.extras.DictCursor
 
@@ -13,30 +16,34 @@ _parsed = urlparse.urlparse(settings.database_url)
 _conn_string = "host='{}' port='{}' user='{}' password='{}' dbname='{}'".format(_parsed.hostname, _parsed.port, _parsed.username, _parsed.password, _parsed.path[1:])
 
 class Database:
+	def __init__(self):
+		self.connection = self._connect()
+
+	def __del__(self):
+		self.connection.close()
+
 	def _connect(self, connstr=_conn_string):
 		# Creates a connection to the database using the given connection string
 		return psycopg2.connect(connstr)
 
 	def _write(self, sql, args=tuple()):
 		# Executes a query which modifies the database
-		connection = self._connect()
 		try:
-			with connection.cursor(cursor_factory=_cursor_class) as cursor:
+			with self.connection.cursor(cursor_factory=_cursor_class) as cursor:
 				cursor.execute(sql, args)
-			connection.commit()
-		finally:
-			connection.close()
+			self.connection.commit()
+		except Exception as ex:
+			logger.error(str(ext))
 
 	def _read(self, sql, args=tuple()):
 		# Executes a query which doesn't modify the database but returns data
-		connection = self._connect()
 		result = None
 		try:
-			with connection.cursor(cursor_factory=_cursor_class) as cursor:
+			with self.connection.cursor(cursor_factory=_cursor_class) as cursor:
 				cursor.execute(sql, args)
 				result = cursor.fetchall()
-		finally:
-			connection.close()
+		except Exception as ex:
+			logger.error(str(ex))
 		return result
 
 	def build(self):
