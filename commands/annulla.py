@@ -8,10 +8,14 @@ from utils.filters import UserFilter
 pass_args = False
 
 def run(bot, update):
-	user = database.users.get_single(UserFilter(userid=update.message.from_user.id))
+	dbusers = database.users.DbUsers()
+	user = dbusers.get_single(UserFilter(userid=update.message.from_user.id))
 	if user.state == UserState.CONFRONTA:
+		dbconfrontaitems = database.confronta_items.DbConfrontaItems()
 		user.state = UserState.NONE
 		user.other = None
-		database.confronta_items.clear(user)
-		database.users.update(user)
+		dbconfrontaitems.clear(user)
+		dbusers.update(user)
 		update.message.reply_text('Comando <code>confronta</code> annullato.', parse_mode='HTML')
+	elif user.state == UserState.CONFRONTA_ADDING:
+		update.message.reply_text('Aspetta il messaggio di conferma!')

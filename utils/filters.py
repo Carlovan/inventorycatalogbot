@@ -39,21 +39,23 @@ class ItemFilter:
 	def from_list(args):
 		# Separates the rarity from the name filters in the given list and builds a new filter
 		args = map(str.strip, args) # Strip every arg
-		args = list(set(args)) # Remove duplicates
-		if '' in args:
-			args.remove('') # Remove empty args
-		tmp = list(map(is_rarity, map(str.upper, args)))
-		name_ind = tmp.index(False) if False in tmp else len(tmp)
-		rarity = list(map(str.upper, args[:name_ind]))
-		name = args[name_ind:]
+		rarity = []
+		name = []
 		usable = None
-		if '[usabile]' in name:
-			usable = True
-			name.remove('[usabile]')
-		for x in name:
-			if x in ItemFilter._rarity_exceptions:
-				name.remove(x)
-				rarity += ItemFilter._rarity_exceptions[x]
+		still_rarity = True
+		for a in args:
+			if still_rarity:
+				if is_rarity(a.upper()):
+					rarity.append(a.upper())
+				elif a.upper() in ItemFilter._rarity_exceptions:
+					rarity += ItemFilter._rarity_exceptions[a]
+				else:
+					still_rarity = False
+			if not still_rarity:
+				if a == '[usabile]':
+					usable = True
+				else:
+					name.append(a)
 		return ItemFilter(rarity=rarity, name=name, usable=usable)
 
 class UserFilter:

@@ -5,3 +5,9 @@ import os
 token = os.getenv('TOKEN')
 database_url = os.getenv('DATABASE_URL')
 webhook = os.getenv('WEBHOOK', None)
+changelog = 'Benvenuto nel catalogo!'
+try:
+	with open('changelog.txt', 'r') as cf:
+		changelog += '\n' + cf.read()
+except:
+	pass

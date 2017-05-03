@@ -4,8 +4,11 @@
 from .item import Item, is_item
 import database.items
 import database.users
+import database.confronta_items
 from utils.filters import UserFilter
 from utils.states import UserState
+import logging
+logger = logging.getLogger(__name__)
 
 class Inventory:
 	def __init__(self, items, user=None):
@@ -23,10 +26,12 @@ class Inventory:
 		return res
 	def ensure_data(self):
 		# Reads the data from the DB
+		dbitems = database.items.DbItems()
+		dbusers = database.users.DbUsers()
 		if self.user:
-			self.user = database.users.get_single(UserFilter(userid=self.user.userid))
+			self.user = dbusers.get_single(UserFilter(userid=self.user.userid))
 		for i in range(len(self.items)):
-			self.items[i] = database.items.get_single(self.items[i].name)
+			self.items[i] = dbitems.get_single(self.items[i].name)
 	@staticmethod
 	def parse(text, *args, **kwargs):
 		# Parses an inventory message
@@ -50,8 +55,9 @@ class Inventory:
 def add(inv):
 	# Adds a list of items to the database
 	assert(type(inv) is Inventory)
-	items = list(filter(lambda item: database.items.get_single(item.name) is None, inv.items))
-	database.items.add(items)
+	dbitems = database.items.DbItems()
+	items = list(filter(lambda item: dbitems.get_single(item.name) is None, inv.items))
+	dbitems.add(items)
 	return len(items)
 
 def received(inv):
@@ -61,7 +67,15 @@ def received(inv):
 	count = add(inv)
 	inv.ensure_data()
 	if inv.user.state == UserState.NONE:
+		logger.info('User {} added {} items'.format(inv.user.username, count))
 		return f'Hai aggiunto {count} oggetti.'
 	elif inv.user.state == UserState.CONFRONTA:
-		database.confronta_items.add_inventory(inv)
+		logger.info('User {} added items to confronta'.format(inv.user.username))
+		dbconfrontaitems = database.confronta_items.DbConfrontaItems()
+		dbusers = database.users.DbUsers()
+		inv.user.state = UserState.CONFRONTA_ADDING
+		dbusers.update(inv.user)
+		dbconfrontaitems.add_inventory(inv)
+		inv.user.state = UserState.CONFRONTA
+		dbusers.update(inv.user)
 		return 'Ok'

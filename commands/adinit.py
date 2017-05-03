@@ -7,5 +7,6 @@ import database
 pass_args = False
 
 def run(bot, update):
-	database.build()
+	db = database.Database()
+	db.build()
 	update.message.reply_text('Fatto.')
