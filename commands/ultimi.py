@@ -4,11 +4,14 @@
 import database.items
 import utils.inventory
 
-pass_args = False
+pass_args = True
 
-def run(bot, update):
+def run(bot, update, args):
 	dbitems = database.items.DbItems()
-	inv = dbitems.get_last(10)
+	count = 10
+	if len(args) == 1 and args[0].isdigit():
+		count = int(args[0])
+	inv = dbitems.get_last(count)
 	messages = inv.get_messages(head='Gli ultimi oggetti inseriti nel catalogo:')
 	for msg in messages:
 		update.message.reply_text(msg)

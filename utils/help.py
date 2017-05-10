@@ -25,6 +25,7 @@ Il comando /conta si comporta nello stesso identico modo del comando /inventario
 
 <b>Comando ultimi</b>
 Utilizzando il comando /ultimi è possibile vedere gli ultimi 10 oggetti aggiunti <b>al catalogo</b> (non necessariamente al gioco).
+E' inoltre possibile specificare il numero di oggetti da visualizzare.
 
 <b>Comando confronta</b>
 Il comando /confronta invece ti permette di controllare il tuo inventario personale e sapere quali oggetti ti mancano.
