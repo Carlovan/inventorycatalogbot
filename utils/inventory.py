@@ -78,4 +78,4 @@ def received(inv):
 		dbconfrontaitems.add_inventory(inv)
 		inv.user.state = UserState.CONFRONTA
 		dbusers.update(inv.user)
-		return 'Ok'
+		return 'Ok. Usa /fine, /annulla o manda altri oggetti.'
