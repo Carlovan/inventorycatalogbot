@@ -5,6 +5,7 @@ from .item import Item, is_item
 import database.items
 import database.users
 import database.confronta_items
+import utils
 from utils.filters import UserFilter
 from utils.states import UserState
 import logging
@@ -57,6 +58,13 @@ def add(inv):
 	assert(type(inv) is Inventory)
 	dbitems = database.items.DbItems()
 	items = list(filter(lambda item: dbitems.get_single(item.name) is None, inv.items))
+	items = []
+	for item in inv.items:
+		dbi = dbitems.get_single(item.name)
+		if dbi is None:
+			items.append(item)
+		elif dbi != item:
+			utils.send_admin('Errore:\nvecchio "{}"\nnuovo "{}"'.format(str(dbi), str(item)))
 	dbitems.add(items)
 	return len(items)
 
@@ -78,4 +86,4 @@ def received(inv):
 		dbconfrontaitems.add_inventory(inv)
 		inv.user.state = UserState.CONFRONTA
 		dbusers.update(inv.user)
-		return 'Ok'
+		return 'Ok. Usa /fine, /annulla o manda altri oggetti.'

@@ -24,6 +24,12 @@ class DbItems(Database):
 		item = self._read(sql, (name,))
 		return None if len(item) == 0 else _from_db_format(item[0])
 
+	def get_single_by_id(self, itemid):
+		assert(type(itemid) is int)
+		sql = 'SELECT * FROM items WHERE id = %s'
+		item = self._read(sql, (itemid,))
+		return None if len(item) == 0 else _from_db_format(item[0])
+
 	def get_multiple(self, filt):
 		assert(type(filt) is utils.filters.ItemFilter)
 		sql = 'SELECT * FROM items WHERE {}'.format(filt.get_sql())
@@ -48,3 +54,8 @@ class DbItems(Database):
 		# Deletes the item with the given id
 		sql = 'DELETE FROM items WHERE id = %s'
 		self._write(sql, (itemid,))
+	
+	def update(self, item):
+		assert(type(item) is utils.item.Item)
+		sql = 'UPDATE items SET name=%s, rarity=%s, usable=%s WHERE id=%s'
+		self._write(sql, (item.name, item.rarity, item.usable, item.itemid))

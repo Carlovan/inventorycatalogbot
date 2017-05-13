@@ -12,6 +12,7 @@ logger = logging.getLogger(__name__)
 def main():
 	updater = Updater(settings.token)
 	dp = updater.dispatcher
+	settings.bot = updater.bot
 
 	for handler in cmds.handlers:
 		dp.add_handler(handler)
