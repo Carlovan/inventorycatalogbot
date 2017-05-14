@@ -33,12 +33,14 @@ def run(bot, update):
 			update.message.reply_text(m)
 	elif user.state == UserState.CONTAINV:
 		dbcontainvitems = database.containv_items.DbContainvItems()
+		dbitems = database.items.DbItems()
 		uinv = dbcontainvitems.get(user)
 		text = 'Hai in totale {} oggetti di cui:'.format(len(uinv.items))
 		for rar in utils.item._rarities:
 			filt = ItemFilter(rarity=[rar])
-			count = len(uinv.filter_items(filt).items)
-			text += '\n- {} di rarità {}'.format(count, rar)
+			ucount = len(uinv.filter_items(filt).items)
+			dbcount = dbitems.count(filt)
+			text += '\n- {}/{} di rarità {}'.format(ucount, dbcount, rar)
 
 		user.state = UserState.NONE
 		dbcontainvitems.clear(user)
