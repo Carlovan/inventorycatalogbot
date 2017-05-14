@@ -58,6 +58,7 @@ class Database:
 				   username   VARCHAR NOT NULL DEFAULT '',
 				   admin      BOOLEAN NOT NULL DEFAULT false,
 				   state      VARCHAR,
+				   changelog  BOOLEAN NOT NULL DEFAULT false, -- true if the user already received the last changelog
 				   other      VARCHAR); -- Useful to store additional data about the user state
 				 INSERT INTO users(id, username, admin)
 				   SELECT 62805296, 'Carlovan', true

@@ -49,4 +49,6 @@ admin_commands_text = '''<b>Comandi admin</b>
 <i>/adinventario ...</i>  : come <code>/inventario</code> ma mostra gli id degli item.
 <i>/addelete itemid1 [idemid2 itemid3 ...]</i>  : per eliminare degli item.
 <i>/adsetadmin username bool</i>  : imposta il flag item dell'utente al valore specificato (true se valore = 't', 'true', '1')
-<i>/adupdate itemid item-string</i>  : aggiorna l'item con l'id specificato'''
+<i>/adupdate itemid item-string</i>  : aggiorna l'item con l'id specificato
+<i>/adnewchangelog</i>  : da usare quando c'e un nuovo changelog, la prossima volta che gli utenti scriveranno gli verra' mandato
+'''
