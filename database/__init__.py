@@ -66,5 +66,9 @@ class Database:
 				   itemid INTEGER REFERENCES items(id),
 				   userid BIGINT  REFERENCES users(id),
 				   PRIMARY KEY(itemid, userid));
+				 CREATE TABLE IF NOT EXISTS containv_items (
+				   itemid INTEGER REFERENCES items(id),
+				   userid BIGINT  REFERENCES users(id),
+				   PRIMARY KEY(itemid, userid));
 			  '''
 		self._write(sql)

@@ -6,3 +6,5 @@ class UserState(enum.Enum):
 	NONE = None
 	CONFRONTA = 'confronta'
 	CONFRONTA_ADDING = 'confadding'
+	CONTAINV = 'containv'
+	CONTAINV_ADDING = 'containvadding'
