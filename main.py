@@ -4,6 +4,7 @@ import logging
 import commands as cmds
 import messages as msgs
 import settings
+import utils.user
 
 # Setting up the logger
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
@@ -14,10 +15,14 @@ def main():
 	dp = updater.dispatcher
 	settings.bot = updater.bot
 
+	dp.add_handler(utils.user.check_handler, group=0)
+
 	for handler in cmds.handlers:
-		dp.add_handler(handler)
+		dp.add_handler(handler, group=1)
 	for handler in msgs.handlers:
-		dp.add_handler(handler)
+		dp.add_handler(handler, group=1)
+
+	dp.add_handler(utils.user.changelog_handler, group=2)
 
 	if settings.webhook is None:
 		updater.start_polling()

@@ -3,8 +3,10 @@
 import database.items
 import database.users
 import database.confronta_items
+import database.containv_items
 from utils.filters import UserFilter, ItemFilter
 from utils.states import UserState
+import utils.item
 
 pass_args = False
 
@@ -29,5 +31,20 @@ def run(bot, update):
 		messages = diff.get_messages(head='Ti mancano {} oggetti:'.format(len(diff.items)))
 		for m in messages:
 			update.message.reply_text(m)
-	elif user.state == UserState.CONFRONTA_ADDING:
+	elif user.state == UserState.CONTAINV:
+		dbcontainvitems = database.containv_items.DbContainvItems()
+		dbitems = database.items.DbItems()
+		uinv = dbcontainvitems.get(user)
+		text = 'Hai in totale {} oggetti di cui:'.format(len(uinv.items))
+		for rar in utils.item._rarities:
+			filt = ItemFilter(rarity=[rar])
+			ucount = len(uinv.filter_items(filt).items)
+			dbcount = dbitems.count(filt)
+			text += '\n- {}/{} di rarità {}'.format(ucount, dbcount, rar)
+
+		user.state = UserState.NONE
+		dbcontainvitems.clear(user)
+		dbusers.update(user)
+		update.message.reply_text(text)
+	elif user.state in [UserState.CONFRONTA_ADDING, UserState.CONTAINV_ADDING]:
 		update.message.reply_text('Aspetta il messaggio di conferma!')

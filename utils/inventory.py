@@ -33,6 +33,10 @@ class Inventory:
 			self.user = dbusers.get_single(UserFilter(userid=self.user.userid))
 		for i in range(len(self.items)):
 			self.items[i] = dbitems.get_single(self.items[i].name)
+	def filter_items(self, filt):
+		assert(type(filt) is utils.filters.ItemFilter)
+		items = list(filter(filt.get_lambda(), self.items))
+		return Inventory(items, self.user)
 	@staticmethod
 	def parse(text, *args, **kwargs):
 		# Parses an inventory message
@@ -74,16 +78,27 @@ def received(inv):
 	assert(type(inv) is Inventory)
 	count = add(inv)
 	inv.ensure_data()
+	dbusers = database.users.DbUsers()
 	if inv.user.state == UserState.NONE:
 		logger.info('User {} added {} items'.format(inv.user.username, count))
 		return f'Hai aggiunto {count} oggetti.'
 	elif inv.user.state == UserState.CONFRONTA:
 		logger.info('User {} added items to confronta'.format(inv.user.username))
 		dbconfrontaitems = database.confronta_items.DbConfrontaItems()
-		dbusers = database.users.DbUsers()
 		inv.user.state = UserState.CONFRONTA_ADDING
 		dbusers.update(inv.user)
 		dbconfrontaitems.add_inventory(inv)
 		inv.user.state = UserState.CONFRONTA
 		dbusers.update(inv.user)
 		return 'Ok. Usa /fine, /annulla o manda altri oggetti.'
+	elif inv.user.state == UserState.CONTAINV:
+		logger.info('User {} added item to containv'.format(inv.user.username))
+		dbcontainvitems = database.containv_items.DbContainvItems()
+		inv.user.state = UserState.CONTAINV_ADDING
+		dbusers.update(inv.user)
+		dbcontainvitems.add_inventory(inv)
+		inv.user.state = UserState.CONTAINV
+		dbusers.update(inv.user)
+		return 'Ok. Usa /fine, /annulla o manda altri oggetti.'
+	elif inv.user.state in [UserState.CONFRONTA_ADDING, UserState.CONTAINV_ADDING]:
+		return 'Aspetta il messaggio di conferma!'

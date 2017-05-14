@@ -32,7 +32,13 @@ Il comando /confronta invece ti permette di controllare il tuo inventario person
 Quando esegui il comando puoi specificare un filtro (ad esempio <code>/confronta +</code>) che verra' usato per effettuare il confronto.
 Ti verra' chiesto di mandare il tuo inventario: in questa fase puoi inoltrare dal bot il risultato dei comandi <code>/mostra</code>, <code>/inventario</code>, <code>/inv2</code>, <code>/esporta</code>.
 Quando hai finito di inviare i tuoi oggetti esegui il comando <code>/fine</code> per terminare e ottenere la lista degli oggetti che ti mancano.
-Per annullare in qualsiasi momento esegui <code>/annulla</code>.'''
+Per annullare in qualsiasi momento esegui <code>/annulla</code>.
+
+<b>Comando containv</b>
+Il comando /containv serve per contare dal tuo inventario. Dopo averlo eseguito invia il tuo inventario come se stessi facendo il comando <code>/confronta</code>.
+Con il comando <code>/fine</code> ottieni il conteggio dei tuoi oggetti (distinti) per ogni rarità.
+Per annullare in qualsiasi momento esegui <code>/annulla</code>.
+'''
 
 contribute_text = '''Per contribuire al catalogo devi inoltrare i messaggi da @InventoryBot.
 Sono supportati i seguenti comandi: <code>/mostra</code>, <code>/inventario</code>, <code>/inv2</code>, <code>/esporta</code>.
@@ -43,4 +49,6 @@ admin_commands_text = '''<b>Comandi admin</b>
 <i>/adinventario ...</i>  : come <code>/inventario</code> ma mostra gli id degli item.
 <i>/addelete itemid1 [idemid2 itemid3 ...]</i>  : per eliminare degli item.
 <i>/adsetadmin username bool</i>  : imposta il flag item dell'utente al valore specificato (true se valore = 't', 'true', '1')
-<i>/adupdate itemid item-string</i>  : aggiorna l'item con l'id specificato'''
+<i>/adupdate itemid item-string</i>  : aggiorna l'item con l'id specificato
+<i>/adnewchangelog</i>  : da usare quando c'e un nuovo changelog, la prossima volta che gli utenti scriveranno gli verra' mandato
+'''

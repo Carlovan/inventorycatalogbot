@@ -6,7 +6,7 @@ import utils.filters
 import utils.states
 
 def _from_db_format(user):
-	return utils.user.User(user['id'], user['username'], user['admin'], utils.states.UserState(user['state']), user['other'])
+	return utils.user.User(user['id'], user['username'], user['admin'], utils.states.UserState(user['state']), user['changelog'], user['other'])
 
 class DbUsers(Database):
 	def get_single(self, filt):
@@ -25,5 +25,9 @@ class DbUsers(Database):
 		self._write(sql, (user.userid, user.username, user.admin, user.state.value))
 
 	def update(self, user):
-		sql = 'UPDATE users SET username = %s, admin = %s, state = %s, other = %s WHERE id = %s;'
-		self._write(sql, (user.username, user.admin, user.state.value, user.other, user.userid))
+		sql = 'UPDATE users SET username = %s, admin = %s, state = %s, changelog = %s, other = %s WHERE id = %s;'
+		self._write(sql, (user.username, user.admin, user.state.value, user.changelog, user.other, user.userid))
+
+	def set_all_changelog(self):
+		sql = 'UPDATE users SET changelog = false;'
+		self._write(sql)
