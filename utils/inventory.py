@@ -33,6 +33,10 @@ class Inventory:
 			self.user = dbusers.get_single(UserFilter(userid=self.user.userid))
 		for i in range(len(self.items)):
 			self.items[i] = dbitems.get_single(self.items[i].name)
+	def filter_items(self, filt):
+		assert(type(filt) is utils.filters.ItemFilter)
+		items = list(filter(filt.get_lambda(), self.items))
+		return Inventory(items, self.user)
 	@staticmethod
 	def parse(text, *args, **kwargs):
 		# Parses an inventory message
