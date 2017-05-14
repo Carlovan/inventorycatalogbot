@@ -10,17 +10,6 @@ logger = logging.getLogger(__name__)
 pass_args = False
 
 def run(bot, update):
-	dbusers = database.users.DbUsers()
-	#text = utils.help.main_text
-	#text += '\n Puoi leggere nuovamente questo messaggio con /help .'
-	text = settings.changelog
-	user = dbusers.get_single(UserFilter(userid=update.message.from_user.id))
-	if user == None:
-		new_user = utils.user.User.from_telegram(update.message.from_user)
-		dbusers.add_new(new_user)
-		logger.info('User {} just started the bot'.format(new_user.username))
-	else:
-		user.username = update.message.from_user.username
-		dbusers.update(user)
-	update.message.reply_text(text, parse_mode='HTML')
-	
+	update.message.reply_text('Ciao benvenuto nel catalogo di @InventoryBot! Ti consiglio caldamente di leggere /help per sapere come funziona :P')
+	update.message.reply_text(settings.changelog, parse_mode='HTML')
+	logger.info('User {} just started the bot'.format(update.message.from_user.username))

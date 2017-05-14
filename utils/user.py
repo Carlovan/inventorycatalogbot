@@ -3,6 +3,8 @@
 
 import telegram.user
 import utils.states
+import database.users
+from utils.filters import UserFilter
 
 class User:
 	def __init__(self, userid, username, admin, state, other):
@@ -24,3 +26,15 @@ class User:
 		return '{} [{}] [{}]{}'.format(self.username, self.userid, self.state.name, ' [admin]' if self.admin else '')
 	def __repr__(self):
 		return str(self)
+
+def check_handler_run(bot, update):
+	# This handler adds or update the user in the db when any message is received
+	dbusers = database.users.DbUsers()
+	user = dbusers.get_single(UserFilter(userid=update.message.from_user.id))
+	if user == None:
+		new_user = User.from_telegram(update.message.from_user)
+		dbusers.add_new(new_user)
+	else:
+		user.username = update.message.from_user.username
+		dbusers.update(user)
+check_handler = telegram.ext.RegexHandler('.*', check_handler_run)
