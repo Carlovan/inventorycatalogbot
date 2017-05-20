@@ -37,10 +37,11 @@ class DbItems(Database):
 		items = list(map(_from_db_format, items))
 		return utils.inventory.Inventory(items)
 
-	def get_last(self, count):
+	def get_last(self, count, filt=utils.filters.ItemFilter()):
 		assert(type(count) is int)
-		sql = 'SELECT * FROM items ORDER BY id DESC LIMIT %s'
-		items = self._read(sql, (count,))
+		assert(filt is None or type(filt) is utils.filters.ItemFilter)
+		sql = 'SELECT * FROM items WHERE {0} ORDER BY id DESC LIMIT %s'.format(filt.get_sql())
+		items = self._read(sql, filt.get_args() + (count,))
 		items = list(map(_from_db_format, items))
 		return utils.inventory.Inventory(items)
 
