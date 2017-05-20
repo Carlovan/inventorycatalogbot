@@ -47,18 +47,19 @@ class ItemFilter:
 		usable = None
 		still_rarity = True
 		for a in args:
+			a = a.upper()
 			if still_rarity:
-				if is_rarity(a.upper()):
-					rarity.append(a.upper())
+				if is_rarity(a):
+					rarity.append(a)
 				elif a.upper() in ItemFilter._rarity_exceptions:
 					rarity += ItemFilter._rarity_exceptions[a]
 				else:
 					still_rarity = False
 			if not still_rarity:
-				if a == '[usabile]':
+				if a == '[USABILE]': # This is uppercase due to a = a.upper()
 					usable = True
 				else:
-					name.append(a)
+					name.append(a)  # The filter is case insensitive
 		return ItemFilter(rarity=rarity, name=name, usable=usable)
 
 class UserFilter:
