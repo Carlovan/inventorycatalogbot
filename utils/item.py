@@ -3,7 +3,7 @@
 
 import re
 
-_rarities = ['U', 'X', 'L10', 'L9', 'L8', 'L7', 'L6', 'L5', 'L4', 'L3', 'L2', 'L1', 'M+', 'M', 'S+', 'S', 'R+', 'R', 'N+', 'N', 'C+', 'C']
+_rarities = ['U', 'X', 'L11', 'L10', 'L9', 'L8', 'L7', 'L6', 'L5', 'L4', 'L3', 'L2', 'L1', 'M+', 'M', 'S+', 'S', 'R+', 'R', 'N+', 'N', 'C+', 'C']
 _articles = ['un ', 'uno ', 'una ', 'un\'', 'il ', 'lo ', 'la ', 'i ', 'gli ', 'le ', 'l\'']
 
 _rarity_regex_text =  r'(?P<rarity>{})'.format('|'.join(_rarities).replace('+', r'\+'))
