@@ -16,7 +16,7 @@ class ItemFilter:
 	
 	def get_sql(self, rar_field='rarity', nam_field='name'):
 		rar = ' OR '.join([f'{rar_field} = %s'] * len(self.rarity))
-		nam = ' AND '.join([f'LOWER({nam_field}) LIKE %s'] * len(self.name))
+		nam = ' AND '.join([f'LOWER({nam_field}) LIKE LOWER(%s)'] * len(self.name))
 		sql = ''
 		if rar == '' and nam == '':
 			sql = '1 = 1'
