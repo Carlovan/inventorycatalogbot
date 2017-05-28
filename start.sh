@@ -1,3 +1,3 @@
 set -a
 source .env
-python main.py 2>>&1 | tee logs.log
+python main.py 2>&1 | tee logs.log
