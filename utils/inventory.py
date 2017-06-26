@@ -41,8 +41,9 @@ class Inventory:
 	def parse(text, *args, **kwargs):
 		# Parses an inventory message
 		def f(s):
-			num = s.rfind('x')
-			return s[1:num].strip()
+			#num = s.rfind('x')
+			#return s[1:num].strip()
+			return s.strip()
 		lines = map(f, text.split('\n'))
 		items = []
 		for line in lines:
