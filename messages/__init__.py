@@ -4,10 +4,12 @@
 import importlib
 from telegram.ext import MessageHandler, RegexHandler
 from telegram.ext.filters import Filters
+import re
 
 msg_list = [('inventario','@.*, possiedi( \(pg \d+/\d+\))?:\n.*'),
             ('mostra', '@.*, mostri orgogliosamente di possedere \d+x (?P<item>.*)'),
-            ('esporta', Filters.document)]
+            ('esporta', Filters.document),
+			('users_stats', 'Avventuriero @.+(\n.*)*.*Oggetti unici:(?P<items>.+(\n.*)*)')]
 
 handlers = []
 for c in msg_list:
