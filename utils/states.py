@@ -8,3 +8,8 @@ class UserState(enum.Enum):
 	CONFRONTA_ADDING = 'confadding'
 	CONTAINV = 'containv'
 	CONTAINV_ADDING = 'containvadding'
+
+class ItemState(enum.Enum):
+	NONE = None
+	CONFRONTA = 'confronta'
+	CONTAINV = 'containv'

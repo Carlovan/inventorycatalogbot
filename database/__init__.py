@@ -63,13 +63,11 @@ class Database:
 				 INSERT INTO users(id, username, admin)
 				   SELECT 62805296, 'Carlovan', true
 				   WHERE NOT EXISTS (SELECT * FROM users WHERE id != 62805296);
-				 CREATE TABLE IF NOT EXISTS confronta_items (
-				   itemid INTEGER REFERENCES items(id),
-				   userid BIGINT  REFERENCES users(id),
-				   PRIMARY KEY(itemid, userid));
-				 CREATE TABLE IF NOT EXISTS containv_items (
-				   itemid INTEGER REFERENCES items(id),
-				   userid BIGINT  REFERENCES users(id),
+				 CREATE TABLE IF NOT EXISTS user_items (
+				   itemid   INTEGER REFERENCES items(id),
+				   userid   BIGINT  REFERENCES users(id),
+				   quantity INTEGER NOT NULL DEFAULT 0,
+				   state VARCHAR,
 				   PRIMARY KEY(itemid, userid));
 			  '''
 		self._write(sql)

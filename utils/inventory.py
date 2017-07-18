@@ -4,10 +4,10 @@
 from .item import Item, is_item
 import database.items
 import database.users
-import database.confronta_items
+import database.user_items
 import utils
 from utils.filters import UserFilter
-from utils.states import UserState
+from utils.states import UserState, ItemState
 import logging
 logger = logging.getLogger(__name__)
 
@@ -80,26 +80,29 @@ def received(inv):
 	count = add(inv)
 	inv.ensure_data()
 	dbusers = database.users.DbUsers()
-	if inv.user.state == UserState.NONE:
-		logger.info('User {} added {} items'.format(inv.user.username, count))
-		return f'Hai aggiunto {count} oggetti.'
-	elif inv.user.state == UserState.CONFRONTA:
-		logger.info('User {} added items to confronta'.format(inv.user.username))
-		dbconfrontaitems = database.confronta_items.DbConfrontaItems()
-		inv.user.state = UserState.CONFRONTA_ADDING
-		dbusers.update(inv.user)
-		dbconfrontaitems.add_inventory(inv)
-		inv.user.state = UserState.CONFRONTA
-		dbusers.update(inv.user)
-		return 'Ok. Usa /fine, /annulla o manda altri oggetti.'
-	elif inv.user.state == UserState.CONTAINV:
-		logger.info('User {} added item to containv'.format(inv.user.username))
-		dbcontainvitems = database.containv_items.DbContainvItems()
-		inv.user.state = UserState.CONTAINV_ADDING
-		dbusers.update(inv.user)
-		dbcontainvitems.add_inventory(inv)
-		inv.user.state = UserState.CONTAINV
-		dbusers.update(inv.user)
-		return 'Ok. Usa /fine, /annulla o manda altri oggetti.'
-	elif inv.user.state in [UserState.CONFRONTA_ADDING, UserState.CONTAINV_ADDING]:
-		return 'Aspetta il messaggio di conferma!'
+	try:
+		if inv.user.state == UserState.NONE:
+			logger.info('User {} added {} items'.format(inv.user.username, count))
+			return f'Hai aggiunto {count} oggetti.'
+		elif inv.user.state == UserState.CONFRONTA:
+			logger.info('User {} added items to confronta'.format(inv.user.username))
+			dbuseritems = database.user_items.DbUserItems()
+			inv.user.state = UserState.CONFRONTA_ADDING
+			dbusers.update(inv.user)
+			dbuseritems.add_inventory(inv, ItemState.CONFRONTA)
+			inv.user.state = UserState.CONFRONTA
+			dbusers.update(inv.user)
+			return 'Ok. Usa /fine, /annulla o manda altri oggetti.'
+		elif inv.user.state == UserState.CONTAINV:
+			logger.info('User {} added item to containv'.format(inv.user.username))
+			dbuseritems = database.user_items.DbUserItems()
+			inv.user.state = UserState.CONTAINV_ADDING
+			dbusers.update(inv.user)
+			dbuseritems.add_inventory(inv, ItemState.CONTAINV)
+			inv.user.state = UserState.CONTAINV
+			dbusers.update(inv.user)
+			return 'Ok. Usa /fine, /annulla o manda altri oggetti.'
+		elif inv.user.state in [UserState.CONFRONTA_ADDING, UserState.CONTAINV_ADDING]:
+			return 'Aspetta il messaggio di conferma!'
+	except Exception as ex:
+		print(ex, flush=True)
