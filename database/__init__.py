@@ -1,14 +1,17 @@
 # -*- coding: utf-8 -*-
 # Useful function to handle the database
 
-import psycopg2, psycopg2.extras
+try:
+	import psycopg2, psycopg2.extras as psycopg2extras
+except ImportError:
+	import psycopg2cffi as psycopg2, psycopg2cffi.extras as psycopg2extras
 import urllib.parse as urlparse
 import settings
 import logging
 
 logger = logging.getLogger(__name__)
 
-_cursor_class = psycopg2.extras.DictCursor
+_cursor_class = psycopg2extras.DictCursor
 
 # Parse the database url to extract the informations
 urlparse.uses_netloc.append('postgres')
