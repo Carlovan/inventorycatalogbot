@@ -5,11 +5,17 @@ import utils.inventory
 import utils.item
 import utils.filters
 import logging
+from utils.states import ItemState
 
 logger = logging.getLogger(__name__)
 
 def _from_db_format(item):
-	return utils.item.Item(item['name'], item['rarity'], item['usable'], item['id'])
+	tmp = utils.item.Item(item['name'], item['rarity'], item['usable'], item['id'])
+	if 'quantity' in item:
+		tmp.quantity = item['quantity']
+	if 'state' in item:
+		tmp.state = ItemState(item['state'])
+	return tmp
 
 class DbItems(Database):
 	def count(self, filt):

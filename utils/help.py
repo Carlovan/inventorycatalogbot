@@ -38,10 +38,13 @@ Per annullare in qualsiasi momento esegui <code>/annulla</code>.
 Il comando /containv serve per contare dal tuo inventario. Dopo averlo eseguito invia il tuo inventario come se stessi facendo il comando <code>/confronta</code>.
 Con il comando <code>/fine</code> ottieni il conteggio dei tuoi oggetti (distinti) per ogni rarità.
 Per annullare in qualsiasi momento esegui <code>/annulla</code>.
+
+<b>Comando confrontainv</b>
+Il comando /confrontainv funziona esattamente come /confronta, ma ti permette di confrontare due inventari inseriti da te. E' sempre possibile specificare un filtro.
 '''
 
 contribute_text = '''Per contribuire al catalogo devi inoltrare i messaggi da @InventoryBot.
-Sono supportati i seguenti comandi: <code>/mostra</code>, <code>/inventario</code>, <code>/inv2</code>, <code>/esporta</code>.
+Sono supportati i seguenti comandi: <code>/mostra</code>, <code>/inventario</code>, <code>/inv2</code>, <code>/esporta</code>, <code>/stats</code> (per aggiungere le <b>[U]</b>).
 GRAZIE MILLE DELL'AIUTO!'''
 
 admin_commands_text = '''<b>Comandi admin</b>
