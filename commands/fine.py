@@ -4,7 +4,7 @@ import database.items
 import database.users
 import database.user_items
 from utils.filters import UserFilter, ItemFilter
-from utils.states import UserState
+from utils.states import UserState, ItemState
 import utils.item
 
 pass_args = False
@@ -45,5 +45,30 @@ def run(bot, update):
 		dbuseritems.clear(user)
 		dbusers.update(user)
 		update.message.reply_text(text)
-	elif user.state in [UserState.CONFRONTA_ADDING, UserState.CONTAINV_ADDING]:
+	elif user.state == UserState.CONFRONTAINV_A:
+		user.state = UserState.CONFRONTAINV_B
+		dbusers.update(user)
+		update.message.reply_text('Ora mandami il secondo inventario da confrontare.')
+	elif user.state == UserState.CONFRONTAINV_B:
+		try:
+			dbuseritems = database.user_items.DbUserItems()
+			filt = ItemFilter.from_list(user.other.split(' '))
+			all_items = dbuseritems.get(user).filter_items(filt)
+			dbuseritems.clear(user)
+			user.state = UserState.NONE
+			user.other = None
+			dbusers.update(user)
+			a_items = all_items.filter_items(lambda x: x.state == ItemState.CONFRONTAINV_A)
+			b_items = all_items.filter_items(lambda x: x.state == ItemState.CONFRONTAINV_B)
+			ab_items = a_items - b_items
+			ba_items = b_items - a_items
+			ab_items.items.sort()
+			ba_items.items.sort()
+			for x in ab_items.get_messages('Oggetti presenti solo nel primo ({}):'.format(len(ab_items.items))):
+				update.message.reply_text(x)
+			for x in ba_items.get_messages('Oggetti presenti solo nel secondo ({}):'.format(len(ba_items.items))):
+				update.message.reply_text(x)
+		except Exception as ex:
+			print(ex, flush=True)
+	elif user.state in [UserState.CONFRONTA_ADDING, UserState.CONTAINV_ADDING, UserState.CONFRONTAINV_A_ADDING, UserState.CONFRONTAINV_B_ADDING]:
 		update.message.reply_text('Aspetta il messaggio di conferma!')

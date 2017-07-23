@@ -36,7 +36,10 @@ class ItemFilter:
 		return tuple(list(map(lambda x: f'%{x}%', self.name)) + self.rarity)
 
 	def get_lambda(self):
-		return lambda item: item.rarity in self.rarity and all([x.lower() in item.name.lower() for x in self.name])
+		if self.rarity == []:
+			return lambda item: all([x.lower() in item.name.lower() for x in self.name])
+		else:
+			return lambda item: item.rarity in self.rarity and all([x.lower() in item.name.lower() for x in self.name])
 
 	@staticmethod
 	def from_list(args):

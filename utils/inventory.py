@@ -6,7 +6,7 @@ import database.items
 import database.users
 import database.user_items
 import utils
-from utils.filters import UserFilter
+from utils.filters import UserFilter, ItemFilter
 from utils.states import UserState, ItemState
 import logging
 logger = logging.getLogger(__name__)
@@ -34,8 +34,10 @@ class Inventory:
 		for i in range(len(self.items)):
 			self.items[i] = dbitems.get_single(self.items[i].name)
 	def filter_items(self, filt):
-		assert(type(filt) is utils.filters.ItemFilter)
-		items = list(filter(filt.get_lambda(), self.items))
+		assert(type(filt) is ItemFilter or callable(filt))
+		if type(filt) is ItemFilter:
+			filt = filt.get_lambda()
+		items = list(filter(filt, self.items))
 		return Inventory(items, self.user)
 	@staticmethod
 	def parse(text, *args, **kwargs):
@@ -101,7 +103,13 @@ def received(inv):
 		elif inv.user.state == UserState.CONTAINV:
 			logger.info('User {} added item to containv'.format(inv.user.username))
 			return add_user_items(inv, UserState.CONTAINV_ADDING, ItemState.CONTAINV)
-		elif inv.user.state in [UserState.CONFRONTA_ADDING, UserState.CONTAINV_ADDING]:
+		elif inv.user.state == UserState.CONFRONTAINV_A:
+			logger.info('User {} added items to confrontainv_a'.format(inv.user.username))
+			return add_user_items(inv, UserState.CONFRONTAINV_A_ADDING, ItemState.CONFRONTAINV_A)
+		elif inv.user.state == UserState.CONFRONTAINV_B:
+			logger.info('User {} added items to confrontainv_b'.format(inv.user.username))
+			return add_user_items(inv, UserState.CONFRONTAINV_B_ADDING, ItemState.CONFRONTAINV_B)
+		elif inv.user.state in [UserState.CONFRONTA_ADDING, UserState.CONTAINV_ADDING, UserState.CONFRONTAINV_A_ADDING, UserState.CONFRONTAINV_B_ADDING]:
 			return 'Aspetta il messaggio di conferma!'
 	except Exception as ex:
 		print(ex, flush=True)

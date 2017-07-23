@@ -17,7 +17,9 @@ def run(bot, update):
 		update.message.reply_text('Comando <code>confronta</code> annullato.', parse_mode='HTML')
 	elif user.state == UserState.CONTAINV:
 		update.message.reply_text('Comando <code>containv</code> annullato.', parse_mode='HTML')
-	elif user.state in [UserState.CONFRONTA_ADDING, UserState.CONTAINV_ADDING]:
+	elif user.state in [UserState.CONFRONTAINV_A, UserState.CONFRONTAINV_B]:
+		update.message.reply_text('Comando <code>confrontainv</code> annullato.', parse_mode='HTML')
+	elif user.state in [UserState.CONFRONTA_ADDING, UserState.CONTAINV_ADDING, UserState.CONFRONTAINV_A_ADDING, UserState.CONFRONTAINV_B_ADDING]:
 		update.message.reply_text('Aspetta il messaggio di conferma!')
 
 	user.state = UserState.NONE

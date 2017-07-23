@@ -2,6 +2,7 @@
 # This file contains a class to represent an item and some extension function to check if a string represents an item
 
 import re
+from utils.states import ItemState
 
 _rarities = ['U', 'X', 'L11', 'L10', 'L9', 'L8', 'L7', 'L6', 'L5', 'L4', 'L3', 'L2', 'L1', 'M+', 'M', 'S+', 'S', 'R+', 'R', 'N+', 'N', 'C+', 'C']
 _articles = ['un ', 'uno ', 'una ', 'un\'', 'il ', 'lo ', 'la ', 'i ', 'gli ', 'le ', 'l\'']
@@ -15,18 +16,20 @@ _name_exceptions = {re.compile('^un po\' di Pongo.*'): 'un po\' di Pongo',
                     re.compile('^un Pakkomon di nome.*'): 'un Pakkomon'}
 
 class Item:
-	def __init__(self, name, rarity, usable, itemid=None, quantity=0):
+	def __init__(self, name, rarity, usable, itemid=None, quantity=0, state=ItemState.NONE):
 		assert(type(name) is str)
 		assert(type(rarity) is str)
 		assert(type(usable) is bool)
 		assert(type(itemid) is int or itemid is None)
 		assert(type(quantity) is int)
+		assert(type(state) is ItemState)
 		assert(is_rarity(rarity))
 		self.name = name.replace('\xa0', ' ')
 		self.rarity = rarity
 		self.usable = usable
 		self.itemid = itemid
 		self.quantity = quantity
+		self.state = state
 
 	def __str__(self):
 		values = {'name': self.name,

@@ -3,4 +3,5 @@ inventario - Fa una lista di oggetti
 ultimi - Mostra gli ultimi oggetti inseriti
 confronta - Controlla quali oggetti ti mancano
 containv - Conta gli oggetti del tuo inventario
+confrontainv - Confronta due inventari
 help - Un minimo di documentazione
