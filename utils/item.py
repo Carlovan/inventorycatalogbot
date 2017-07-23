@@ -8,7 +8,7 @@ _rarities = ['U', 'X', 'L11', 'L10', 'L9', 'L8', 'L7', 'L6', 'L5', 'L4', 'L3', '
 _articles = ['un ', 'uno ', 'una ', 'un\'', 'il ', 'lo ', 'la ', 'i ', 'gli ', 'le ', 'l\'']
 
 _rarity_regex_text =  r'(?P<rarity>{})'.format('|'.join(_rarities).replace('+', r'\+'))
-_item_regex_text   = fr'(- *)?(?P<name>.*?)\s+\[{_rarity_regex_text}\](?P<usable> \[usabile\])?( *x *(?P<quantity>\d+))?'
+_item_regex_text   = r'(- *)?(?P<name>.*?)\s+\[{_rarity_regex_text}\](?P<usable> \[usabile\])?( *x *(?P<quantity>\d+))?'.format(_rarity_regex_text=_rarity_regex_text)
 _rarity_regex = re.compile(_rarity_regex_text)
 _item_regex   = re.compile(_item_regex_text)
 _name_exceptions = {re.compile('^un po\' di Pongo.*'): 'un po\' di Pongo',
