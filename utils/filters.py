@@ -15,8 +15,8 @@ class ItemFilter:
 		self.usable = usable
 	
 	def get_sql(self, rar_field='rarity', nam_field='name'):
-		rar = ' OR '.join([f'{rar_field} = %s'] * len(self.rarity))
-		nam = ' AND '.join([f'LOWER({nam_field}) LIKE LOWER(%s)'] * len(self.name))
+		rar = ' OR '.join(['{} = %s'.format(rar_field)] * len(self.rarity))
+		nam = ' AND '.join(['LOWER({}) LIKE LOWER(%s)'.format(nam_field)] * len(self.name))
 		sql = ''
 		if rar == '' and nam == '':
 			sql = '1 = 1'
@@ -25,7 +25,7 @@ class ItemFilter:
 		elif nam == '':
 			sql = rar
 		else:
-			sql = f'{nam} AND ({rar})'
+			sql = '{} AND ({})'.format(nam, rar)
 		if self.usable == True:
 			sql += ' AND usable = true'
 		elif self.usable == False:
@@ -33,7 +33,7 @@ class ItemFilter:
 		return sql
 
 	def get_args(self):
-		return tuple(list(map(lambda x: f'%{x}%', self.name)) + self.rarity)
+		return tuple(list(map(lambda x: '%{}%'.format(x), self.name)) + self.rarity)
 
 	def get_lambda(self):
 		if self.rarity == []:

@@ -96,7 +96,7 @@ def received(inv):
 	try:
 		if inv.user.state == UserState.NONE:
 			logger.info('User {} added {} items'.format(inv.user.username, count))
-			return f'Hai aggiunto {count} oggetti.'
+			return 'Hai aggiunto {count} oggetti.'.format(count=count)
 		elif inv.user.state == UserState.CONFRONTA:
 			logger.info('User {} added items to confronta'.format(inv.user.username))
 			return add_user_items(inv, UserState.CONFRONTA_ADDING, ItemState.CONFRONTA)
