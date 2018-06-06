@@ -64,13 +64,13 @@ class Database:
 				   changelog  BOOLEAN NOT NULL DEFAULT false, -- true if the user already received the last changelog
 				   other      VARCHAR); -- Useful to store additional data about the user state
 				 INSERT INTO users(id, username, admin)
-				   SELECT 62805296, 'Carlovan', true
-				   WHERE NOT EXISTS (SELECT * FROM users WHERE id != 62805296);
+				   SELECT {admin_id}, '', true
+				   WHERE NOT EXISTS (SELECT * FROM users WHERE id != {admin_id});
 				 CREATE TABLE IF NOT EXISTS user_items (
 				   itemid   INTEGER REFERENCES items(id),
 				   userid   BIGINT  REFERENCES users(id),
 				   quantity INTEGER NOT NULL DEFAULT 0,
 				   state VARCHAR,
 				   PRIMARY KEY(itemid, userid, state));
-			  '''
+			  '''.format(admin_id=settings.admin)
 		self._write(sql)
