@@ -51,6 +51,7 @@ class Inventory:
 		for line in lines:
 			if is_item(line):
 				items.append(Item.from_string(line))
+		items = list(set(items))
 		return Inventory(items, *args, **kwargs)
 	def __sub__(self, other):
 		if not type(other) is Inventory:
