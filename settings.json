@@ -1,0 +1,5 @@
+{
+	"token": "BOT_TOKEN",
+	"database_url": "postgres://USER:PASS@HOST:PORT/DB_NAME",
+	"webhook": "WEBHOOK_URL"
+}
