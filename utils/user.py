@@ -46,7 +46,7 @@ check_handler = telegram.ext.RegexHandler('.*', check_handler_run)
 def changelog_handler_run(bot, update):
 	dbusers = database.users.DbUsers()
 	user = dbusers.get_single(UserFilter(userid=update.message.from_user.id))
-	if user.changelog == False:
+	if user and user.changelog == False:
 		user.changelog = True
 		dbusers.update(user)
 		update.message.reply_text(settings.changelog, parse_mode='HTML')

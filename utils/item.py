@@ -39,6 +39,9 @@ class Item:
 				 }
 		return '{name} [{rarity}]{usable}{quantity}'.format(**values)
 
+	def __hash__(self):
+		return hash('{}@{}@{}'.format(self.name, self.rarity, self.usable))
+
 	def __lt__(self, other):
 		assert(type(other) is Item)
 		if self.rarity != other.rarity:

@@ -21,6 +21,8 @@ _conn_string = "host='{}' port='{}' user='{}' password='{}' dbname='{}'".format(
 class Database:
 	def __init__(self):
 		self.connection = self._connect()
+		self.initialized = True
+		self.initialized = self._read('SELECT SUM(1) FROM information_schema.tables WHERE table_schema=\'public\' AND table_name IN (\'items\', \'users\');')[0][0] == 2
 
 	def __del__(self):
 		self.connection.close()
@@ -31,6 +33,7 @@ class Database:
 
 	def _write(self, sql, args=tuple()):
 		# Executes a query which modifies the database
+		if not self.initialized: return []
 		try:
 			with self.connection.cursor(cursor_factory=_cursor_class) as cursor:
 				cursor.execute(sql, args)
@@ -40,6 +43,7 @@ class Database:
 
 	def _read(self, sql, args=tuple()):
 		# Executes a query which doesn't modify the database but returns data
+		if not self.initialized: return []
 		result = None
 		try:
 			with self.connection.cursor(cursor_factory=_cursor_class) as cursor:
@@ -51,6 +55,7 @@ class Database:
 
 	def build(self):
 		# Creates all the tables (does not drop anything)
+		self.initialized = True
 		sql = '''CREATE TABLE IF NOT EXISTS items (
 				   id     SERIAL     PRIMARY KEY,
 				   name   VARCHAR    NOT NULL UNIQUE,
@@ -64,13 +69,13 @@ class Database:
 				   changelog  BOOLEAN NOT NULL DEFAULT false, -- true if the user already received the last changelog
 				   other      VARCHAR); -- Useful to store additional data about the user state
 				 INSERT INTO users(id, username, admin)
-				   SELECT 62805296, 'Carlovan', true
-				   WHERE NOT EXISTS (SELECT * FROM users WHERE id != 62805296);
+				   SELECT {admin_id}, '', true
+				   WHERE NOT EXISTS (SELECT * FROM users WHERE id = {admin_id});
 				 CREATE TABLE IF NOT EXISTS user_items (
 				   itemid   INTEGER REFERENCES items(id),
 				   userid   BIGINT  REFERENCES users(id),
 				   quantity INTEGER NOT NULL DEFAULT 0,
 				   state VARCHAR,
 				   PRIMARY KEY(itemid, userid, state));
-			  '''
+			  '''.format(admin_id=settings.admin)
 		self._write(sql)

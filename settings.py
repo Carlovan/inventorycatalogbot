@@ -8,6 +8,7 @@ with open('settings.json', 'r') as sf:
 token = _data.get('token')
 database_url = _data.get('database_url')
 webhook = _data.get('webhook', None)
+admin = _data.get('admin')
 bot = None
 changelog = 'Benvenuto nel catalogo!'
 try:

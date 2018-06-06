@@ -3,10 +3,12 @@
 
 import utils
 import database
+import settings
 
 pass_args = False
 
 def run(bot, update):
-	db = database.Database()
-	db.build()
-	update.message.reply_text('Fatto.')
+	if update.message.from_user.id == settings.admin:
+		db = database.Database()
+		db.build()
+		update.message.reply_text('Fatto.')
