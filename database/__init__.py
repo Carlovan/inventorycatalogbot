@@ -36,7 +36,7 @@ class Database:
 				cursor.execute(sql, args)
 			self.connection.commit()
 		except Exception as ex:
-			logger.error(str(ext))
+			logger.error(str(ex))
 
 	def _read(self, sql, args=tuple()):
 		# Executes a query which doesn't modify the database but returns data
@@ -71,6 +71,6 @@ class Database:
 				   userid   BIGINT  REFERENCES users(id),
 				   quantity INTEGER NOT NULL DEFAULT 0,
 				   state VARCHAR,
-				   PRIMARY KEY(itemid, userid));
+				   PRIMARY KEY(itemid, userid, state));
 			  '''
 		self._write(sql)
