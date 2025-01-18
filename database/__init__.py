@@ -40,6 +40,7 @@ class Database:
 			self.connection.commit()
 		except Exception as ex:
 			logger.error(str(ex))
+			raise ex
 
 	def _read(self, sql, args=tuple()):
 		# Executes a query which doesn't modify the database but returns data
@@ -51,6 +52,7 @@ class Database:
 				result = cursor.fetchall()
 		except Exception as ex:
 			logger.error(str(ex))
+			raise ex
 		return result
 
 	def build(self):
