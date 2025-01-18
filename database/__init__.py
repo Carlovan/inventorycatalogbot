@@ -40,6 +40,7 @@ class Database:
 			self.connection.commit()
 		except Exception as ex:
 			logger.error(str(ex))
+			raise ex
 
 	def _read(self, sql, args=tuple()):
 		# Executes a query which doesn't modify the database but returns data
@@ -51,6 +52,7 @@ class Database:
 				result = cursor.fetchall()
 		except Exception as ex:
 			logger.error(str(ex))
+			raise ex
 		return result
 
 	def build(self):
@@ -72,7 +74,7 @@ class Database:
 				   SELECT {admin_id}, '', true
 				   WHERE NOT EXISTS (SELECT * FROM users WHERE id = {admin_id});
 				 CREATE TABLE IF NOT EXISTS user_items (
-				   itemid   INTEGER REFERENCES items(id),
+				   itemid   INTEGER REFERENCES items(id) ON DELETE CASCADE,
 				   userid   BIGINT  REFERENCES users(id),
 				   quantity INTEGER NOT NULL DEFAULT 0,
 				   state VARCHAR,
