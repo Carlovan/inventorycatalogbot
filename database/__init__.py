@@ -74,7 +74,7 @@ class Database:
 				   SELECT {admin_id}, '', true
 				   WHERE NOT EXISTS (SELECT * FROM users WHERE id = {admin_id});
 				 CREATE TABLE IF NOT EXISTS user_items (
-				   itemid   INTEGER REFERENCES items(id),
+				   itemid   INTEGER REFERENCES items(id) ON DELETE CASCADE,
 				   userid   BIGINT  REFERENCES users(id),
 				   quantity INTEGER NOT NULL DEFAULT 0,
 				   state VARCHAR,
